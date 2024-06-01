@@ -33,7 +33,10 @@ public class Contrato {
     @NotNull(message = "{contrato.dataInicio.notnull}")
     private LocalDate dataInicio;
 
+    @NotNull(message = "{contrato.dataFim.notnull}")
     private LocalDate dataFim;
+
+    @NotNull(message = "{contrato.valor.notnull}")
     private Double valor;
 
     @NotBlank(message = "{contrato.status.notblank}")
