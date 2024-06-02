@@ -39,14 +39,28 @@ public class ExibicaoController {
 
     @GetMapping
     @Cacheable
-    @Operation(summary = "Listar Exibições")
+    @Operation(
+        summary = "Listar Exibições",
+        description = "Retorna uma lista paginada de exibições"
+    )
+    @ApiResponses({ 
+        @ApiResponse(responseCode = "200", description = "Exibições listadas"),
+        @ApiResponse(responseCode = "404", description = "Exibições não encontradas")
+    })
     public PagedModel<EntityModel<Exibicao>> index(@PageableDefault(size = 5) Pageable pageable) {
         Page<Exibicao> page = repository.findAll(pageable);
         return assembler.toModel(page);
     }
 
     @GetMapping("{id}")
-    @Operation(summary = "Listar Exibição por ID")
+    @Operation(
+        summary = "Listar Exibição por ID",
+        description = "Retorna uma exibição específica"
+    )
+    @ApiResponses({ 
+        @ApiResponse(responseCode = "200", description = "Exibição listada"),
+        @ApiResponse(responseCode = "404", description = "Exibição não encontrada")
+    })
     public EntityModel<Exibicao> show(@PathVariable Long id) {
         Exibicao exibicao = repository.findById(id).orElseThrow(
             () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Exibição não encontrada")
@@ -57,10 +71,13 @@ public class ExibicaoController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @CacheEvict(allEntries = true)
-    @Operation(summary = "Cadastrar Exibição")
+    @Operation(
+        summary = "Cadastrar Exibição",
+        description = "Cadastra uma nova exibição"
+    )
     @ApiResponses({
-        @ApiResponse(responseCode = "201"),
-        @ApiResponse(responseCode = "400")
+        @ApiResponse(responseCode = "201", description = "Exibição criada"),
+        @ApiResponse(responseCode = "400", description = "Requisição inválida")
     })
     public ResponseEntity<Exibicao> create(@RequestBody @Valid Exibicao exibicao) {
         repository.save(exibicao);
@@ -72,11 +89,14 @@ public class ExibicaoController {
     @DeleteMapping("{id}")
     @ResponseStatus(NO_CONTENT)
     @CacheEvict(allEntries = true)
-    @Operation(summary = "Deletar Exibição")
+    @Operation(
+        summary = "Deletar Exibição",
+        description = "Deleta uma exibição específica"
+    )
     @ApiResponses({
-        @ApiResponse(responseCode = "204"),
-        @ApiResponse(responseCode = "404"),
-        @ApiResponse(responseCode = "401")
+        @ApiResponse(responseCode = "204", description = "Exibição deletada"),
+        @ApiResponse(responseCode = "404", description = "Exibição não encontrada"),
+        @ApiResponse(responseCode = "401", description = "Não autorizado")
     })
     public ResponseEntity<Object> destroy(@PathVariable Long id) {
         repository.findById(id).orElseThrow(
@@ -88,12 +108,15 @@ public class ExibicaoController {
 
     @PutMapping("{id}")
     @CacheEvict(allEntries = true)
-    @Operation(summary = "Atualizar Exibição")
+    @Operation(
+        summary = "Atualizar Exibição",
+        description = "Atualiza uma exibição específica"
+    )
     @ApiResponses({
-        @ApiResponse(responseCode = "200"),
-        @ApiResponse(responseCode = "400"),
-        @ApiResponse(responseCode = "401"),
-        @ApiResponse(responseCode = "404")
+        @ApiResponse(responseCode = "200", description = "Exibição atualizada"),
+        @ApiResponse(responseCode = "400", description = "Requisição inválida"),
+        @ApiResponse(responseCode = "401", description = "Não autorizado"),
+        @ApiResponse(responseCode = "404", description = "Exibição não encontrada")
     })
     public ResponseEntity<Exibicao> update(@PathVariable Long id, @RequestBody @Valid Exibicao exibicaoAtualizada) {
         Exibicao exibicao = repository.findById(id).orElseThrow(

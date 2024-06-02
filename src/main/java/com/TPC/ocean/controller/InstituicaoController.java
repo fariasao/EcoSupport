@@ -39,14 +39,28 @@ public class InstituicaoController {
 
     @GetMapping
     @Cacheable
-    @Operation(summary = "Listar Instituições")
+    @Operation(
+        summary = "Listar Instituições",
+        description = "Retorna uma lista paginada de instituições"
+    )
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Instituições listadas"),
+        @ApiResponse(responseCode = "404", description = "Instituições não encontradas")
+    })
     public PagedModel<EntityModel<Instituicao>> index(@PageableDefault(size = 5) Pageable pageable) {
         Page<Instituicao> page = repository.findAll(pageable);
         return assembler.toModel(page);
     }
 
     @GetMapping("{id}")
-    @Operation(summary = "Listar Instituição por ID")
+    @Operation(
+        summary = "Listar Instituição por ID",
+        description = "Retorna uma instituição específica"
+    )
+    @ApiResponses({ 
+        @ApiResponse(responseCode = "200", description = "Instituição listada"),
+        @ApiResponse(responseCode = "404", description = "Instituição não encontrada")
+    })
     public EntityModel<Instituicao> show(@PathVariable Long id) {
         Instituicao instituicao = repository.findById(id).orElseThrow(
             () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Instituição não encontrada")
@@ -57,10 +71,13 @@ public class InstituicaoController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @CacheEvict(allEntries = true)
-    @Operation(summary = "Cadastrar Instituição")
+    @Operation(
+        summary = "Cadastrar Instituição",
+        description = "Cria uma nova instituição"
+    )
     @ApiResponses({
-        @ApiResponse(responseCode = "201"),
-        @ApiResponse(responseCode = "400")
+        @ApiResponse(responseCode = "201", description = "Instituição criada"),
+        @ApiResponse(responseCode = "400", description = "Requisição inválida")
     })
     public ResponseEntity<Instituicao> create(@RequestBody @Valid Instituicao instituicao) {
         repository.save(instituicao);
@@ -72,11 +89,14 @@ public class InstituicaoController {
     @DeleteMapping("{id}")
     @ResponseStatus(NO_CONTENT)
     @CacheEvict(allEntries = true)
-    @Operation(summary = "Deletar Instituição")
+    @Operation(
+        summary = "Deletar Instituição",
+        description = "Deleta uma instituição específica"
+    )
     @ApiResponses({
-        @ApiResponse(responseCode = "204"),
-        @ApiResponse(responseCode = "404"),
-        @ApiResponse(responseCode = "401")
+        @ApiResponse(responseCode = "204", description = "Instituição deletada"),
+        @ApiResponse(responseCode = "404", description = "Instituição não encontrada"),
+        @ApiResponse(responseCode = "401", description = "Não autorizado")
     })
     public ResponseEntity<Object> destroy(@PathVariable Long id) {
         repository.findById(id).orElseThrow(
@@ -88,12 +108,15 @@ public class InstituicaoController {
 
     @PutMapping("{id}")
     @CacheEvict(allEntries = true)
-    @Operation(summary = "Atualizar Instituição")
+    @Operation(
+        summary = "Atualizar Instituição",
+        description = "Atualiza uma instituição específica"
+    )
     @ApiResponses({
-        @ApiResponse(responseCode = "200"),
-        @ApiResponse(responseCode = "400"),
-        @ApiResponse(responseCode = "401"),
-        @ApiResponse(responseCode = "404")
+        @ApiResponse(responseCode = "200", description = "Instituição atualizada"),
+        @ApiResponse(responseCode = "400", description = "Requisição inválida"),
+        @ApiResponse(responseCode = "401", description = "Não autorizado"),
+        @ApiResponse(responseCode = "404", description = "Instituição não encontrada")
     })
     public ResponseEntity<Instituicao> update(@PathVariable Long id, @RequestBody @Valid Instituicao instituicaoAtualizada) {
         Instituicao instituicao = repository.findById(id).orElseThrow(

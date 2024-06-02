@@ -39,14 +39,28 @@ public class ServicoController {
 
     @GetMapping
     @Cacheable
-    @Operation(summary = "Listar Serviços")
+    @Operation(
+        summary = "Listar Serviços",
+        description = "Retorna uma lista paginada de serviços"
+    )
+    @ApiResponses({ 
+        @ApiResponse(responseCode = "200", description = "Serviços listados"),
+        @ApiResponse(responseCode = "404", description = "Serviços não encontrados")
+    })
     public PagedModel<EntityModel<Servico>> index(@PageableDefault(size = 5) Pageable pageable) {
         Page<Servico> page = repository.findAll(pageable);
         return assembler.toModel(page);
     }
 
     @GetMapping("{id}")
-    @Operation(summary = "Listar Serviço por ID")
+    @Operation(
+        summary = "Listar Serviço por ID",
+        description = "Retorna um serviço específico"
+    )
+    @ApiResponses({ 
+        @ApiResponse(responseCode = "200", description = "Serviço listado"),
+        @ApiResponse(responseCode = "404", description = "Serviço não encontrado")
+    })
     public EntityModel<Servico> show(@PathVariable Long id) {
         Servico servico = repository.findById(id).orElseThrow(
             () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Serviço não encontrado")
@@ -57,10 +71,13 @@ public class ServicoController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @CacheEvict(allEntries = true)
-    @Operation(summary = "Cadastrar Serviço")
+    @Operation(
+        summary = "Cadastrar Serviço",
+        description = "Cadastra um novo serviço"
+    )
     @ApiResponses({
-        @ApiResponse(responseCode = "201"),
-        @ApiResponse(responseCode = "400")
+        @ApiResponse(responseCode = "201", description = "Serviço criado"),
+        @ApiResponse(responseCode = "400", description = "Requisição inválida")
     })
     public ResponseEntity<Servico> create(@RequestBody @Valid Servico servico) {
         repository.save(servico);
@@ -72,11 +89,14 @@ public class ServicoController {
     @DeleteMapping("{id}")
     @ResponseStatus(NO_CONTENT)
     @CacheEvict(allEntries = true)
-    @Operation(summary = "Deletar Serviço")
+    @Operation(
+        summary = "Deletar Serviço",
+        description = "Deleta um serviço"
+    )
     @ApiResponses({
-        @ApiResponse(responseCode = "204"),
-        @ApiResponse(responseCode = "404"),
-        @ApiResponse(responseCode = "401")
+        @ApiResponse(responseCode = "204", description = "Serviço deletado"),
+        @ApiResponse(responseCode = "404", description = "Serviço não encontrado"),
+        @ApiResponse(responseCode = "401", description = "Não autorizado")
     })
     public ResponseEntity<Object> destroy(@PathVariable Long id) {
         repository.findById(id).orElseThrow(
@@ -88,12 +108,15 @@ public class ServicoController {
 
     @PutMapping("{id}")
     @CacheEvict(allEntries = true)
-    @Operation(summary = "Atualizar Serviço")
+    @Operation(
+        summary = "Atualizar Serviço",
+        description = "Atualiza um serviço específico"
+    )
     @ApiResponses({
-        @ApiResponse(responseCode = "200"),
-        @ApiResponse(responseCode = "400"),
-        @ApiResponse(responseCode = "401"),
-        @ApiResponse(responseCode = "404")
+        @ApiResponse(responseCode = "200", description = "Serviço atualizado"),
+        @ApiResponse(responseCode = "400", description = "Requisição inválida"),
+        @ApiResponse(responseCode = "401", description = "Não autorizado"),
+        @ApiResponse(responseCode = "404", description = "Serviço não encontrado")
     })
     public ResponseEntity<Servico> update(@PathVariable Long id, @RequestBody @Valid Servico servicoAtualizado) {
         Servico servico = repository.findById(id).orElseThrow(

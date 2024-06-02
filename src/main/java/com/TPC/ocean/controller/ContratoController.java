@@ -39,14 +39,28 @@ public class ContratoController {
 
     @GetMapping
     @Cacheable
-    @Operation(summary = "Listar Contratos")
+    @Operation(
+        summary = "Listar Contratos",
+        description = "Retorna uma lista paginada de contratos"
+    )
+    @ApiResponses({ 
+        @ApiResponse(responseCode = "200", description = "Contratos listados"),
+        @ApiResponse(responseCode = "404", description = "Contratos não encontrados")
+    })
     public PagedModel<EntityModel<Contrato>> index(@PageableDefault(size = 5) Pageable pageable) {
         Page<Contrato> page = repository.findAll(pageable);
         return assembler.toModel(page);
     }
 
     @GetMapping("{id}")
-    @Operation(summary = "Listar Contrato por ID")
+    @Operation(
+        summary = "Listar Contrato por ID",
+        description = "Retorna um contrato específico"
+    )
+    @ApiResponses({ 
+        @ApiResponse(responseCode = "200", description = "Contrato listado"),
+        @ApiResponse(responseCode = "404", description = "Contrato não encontrado")
+    })
     public EntityModel<Contrato> show(@PathVariable Long id) {
         Contrato contrato = repository.findById(id).orElseThrow(
             () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contrato não encontrado")
@@ -57,10 +71,13 @@ public class ContratoController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @CacheEvict(allEntries = true)
-    @Operation(summary = "Cadastrar Contrato")
+    @Operation(
+        summary = "Cadastrar Contrato",
+        description = "Cadastra um novo contrato"
+    )
     @ApiResponses({
-        @ApiResponse(responseCode = "201"),
-        @ApiResponse(responseCode = "400")
+        @ApiResponse(responseCode = "201", description = "Contrato criado"),
+        @ApiResponse(responseCode = "400", description = "Requisição inválida")
     })
     public ResponseEntity<Contrato> create(@RequestBody @Valid Contrato contrato) {
         repository.save(contrato);
@@ -72,11 +89,14 @@ public class ContratoController {
     @DeleteMapping("{id}")
     @ResponseStatus(NO_CONTENT)
     @CacheEvict(allEntries = true)
-    @Operation(summary = "Deletar Contrato")
+    @Operation(
+        summary = "Deletar Contrato",
+        description = "Deleta um contrato específico"
+    )
     @ApiResponses({
-        @ApiResponse(responseCode = "204"),
-        @ApiResponse(responseCode = "404"),
-        @ApiResponse(responseCode = "401")
+        @ApiResponse(responseCode = "204", description = "Contrato deletado"),
+        @ApiResponse(responseCode = "404", description = "Contrato não encontrado"),
+        @ApiResponse(responseCode = "401", description = "Não autorizado")
     })
     public ResponseEntity<Object> destroy(@PathVariable Long id) {
         repository.findById(id).orElseThrow(
@@ -88,12 +108,15 @@ public class ContratoController {
 
     @PutMapping("{id}")
     @CacheEvict(allEntries = true)
-    @Operation(summary = "Atualizar Contrato")
+    @Operation(
+        summary = "Atualizar Contrato",
+        description = "Atualiza um contrato específico"
+    )
     @ApiResponses({
-        @ApiResponse(responseCode = "200"),
-        @ApiResponse(responseCode = "400"),
-        @ApiResponse(responseCode = "401"),
-        @ApiResponse(responseCode = "404")
+        @ApiResponse(responseCode = "200", description = "Contrato atualizado"),
+        @ApiResponse(responseCode = "400", description = "Requisição inválida"),
+        @ApiResponse(responseCode = "401", description = "Não autorizado"),
+        @ApiResponse(responseCode = "404", description = "Contrato não encontrado")
     })
     public ResponseEntity<Contrato> update(@PathVariable Long id, @RequestBody @Valid Contrato contratoAtualizado) {
         Contrato contrato = repository.findById(id).orElseThrow(

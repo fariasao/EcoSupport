@@ -39,14 +39,28 @@ public class UsuarioController {
 
     @GetMapping
     @Cacheable
-    @Operation(summary = "Listar Usuários")
+    @Operation(
+        summary = "Listar Usuários",
+        description = "Retorna uma lista paginada de usuários"
+    )
+    @ApiResponses({ 
+        @ApiResponse(responseCode = "200", description = "Usuários listados"),
+        @ApiResponse(responseCode = "404", description = "Usuários não encontrados")
+    })
     public PagedModel<EntityModel<Usuario>> index(@PageableDefault(size = 5) Pageable pageable) {
         Page<Usuario> page = repository.findAll(pageable);
         return assembler.toModel(page);
     }
 
     @GetMapping("{id}")
-    @Operation(summary = "Listar Usuário por ID")
+    @Operation(
+        summary = "Listar Usuário por ID",
+        description = "Retorna um usuário específico"
+    )
+    @ApiResponses({ 
+        @ApiResponse(responseCode = "200", description = "Usuário listado"),
+        @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
+    })
     public EntityModel<Usuario> show(@PathVariable Long id) {
         Usuario usuario = repository.findById(id).orElseThrow(
             () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado")
@@ -57,10 +71,13 @@ public class UsuarioController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @CacheEvict(allEntries = true)
-    @Operation(summary = "Cadastrar Usuário")
+    @Operation(
+        summary = "Cadastrar Usuário",
+        description = "Cadastra um novo usuário"
+    )
     @ApiResponses({
-        @ApiResponse(responseCode = "201"),
-        @ApiResponse(responseCode = "400")
+        @ApiResponse(responseCode = "201", description = "Usuário criado"),
+        @ApiResponse(responseCode = "400", description = "Requisição inválida")
     })
     public ResponseEntity<Usuario> create(@RequestBody @Valid Usuario usuario) {
         repository.save(usuario);
@@ -72,11 +89,14 @@ public class UsuarioController {
     @DeleteMapping("{id}")
     @ResponseStatus(NO_CONTENT)
     @CacheEvict(allEntries = true)
-    @Operation(summary = "Deletar Usuário")
+    @Operation(
+        summary = "Deletar Usuário",
+        description = "Deleta um usuário específico"
+    )
     @ApiResponses({
-        @ApiResponse(responseCode = "204"),
-        @ApiResponse(responseCode = "404"),
-        @ApiResponse(responseCode = "401")
+        @ApiResponse(responseCode = "204", description = "Usuário deletado"),
+        @ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+        @ApiResponse(responseCode = "401", description = "Não autorizado")
     })
     public ResponseEntity<Object> destroy(@PathVariable Long id) {
         repository.findById(id).orElseThrow(
@@ -88,12 +108,15 @@ public class UsuarioController {
 
     @PutMapping("{id}")
     @CacheEvict(allEntries = true)
-    @Operation(summary = "Atualizar Usuário")
+    @Operation(
+        summary = "Atualizar Usuário",
+        description = "Atualiza um usuário específico"
+    )
     @ApiResponses({
-        @ApiResponse(responseCode = "200"),
-        @ApiResponse(responseCode = "400"),
-        @ApiResponse(responseCode = "401"),
-        @ApiResponse(responseCode = "404")
+        @ApiResponse(responseCode = "200", description = "Usuário atualizado"),
+        @ApiResponse(responseCode = "400", description = "Requisição inválida"),
+        @ApiResponse(responseCode = "401", description = "Não autorizado"),
+        @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     })
     public ResponseEntity<Usuario> update(@PathVariable Long id, @RequestBody @Valid Usuario usuarioAtualizado) {
         Usuario usuario = repository.findById(id).orElseThrow(

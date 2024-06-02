@@ -39,14 +39,28 @@ public class PerfilInstituicaoController {
 
     @GetMapping
     @Cacheable
-    @Operation(summary = "Listar Perfis de Instituições")
+    @Operation(
+        summary = "Listar Perfis de Instituições",
+        description = "Retorna uma lista paginada de perfis de instituições"
+    )
+    @ApiResponses({ 
+        @ApiResponse(responseCode = "200", description = "Perfis de instituições listados"),
+        @ApiResponse(responseCode = "404", description = "Perfis de instituições não encontrados")
+    })
     public PagedModel<EntityModel<PerfilInstituicao>> index(@PageableDefault(size = 5) Pageable pageable) {
         Page<PerfilInstituicao> page = repository.findAll(pageable);
         return assembler.toModel(page);
     }
 
     @GetMapping("{id}")
-    @Operation(summary = "Listar Perfil de Instituição por ID")
+    @Operation(
+        summary = "Listar Perfil de Instituição por ID",
+        description = "Retorna um perfil de instituição específico"
+    )
+    @ApiResponses({ 
+        @ApiResponse(responseCode = "200", description = "Perfil de instituição listado"),
+        @ApiResponse(responseCode = "404", description = "Perfil de instituição não encontrado")
+    })
     public EntityModel<PerfilInstituicao> show(@PathVariable Long id) {
         PerfilInstituicao perfilInstituicao = repository.findById(id).orElseThrow(
             () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Perfil de instituição não encontrado")
@@ -57,10 +71,13 @@ public class PerfilInstituicaoController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @CacheEvict(allEntries = true)
-    @Operation(summary = "Cadastrar Perfil de Instituição")
+    @Operation(
+        summary = "Cadastrar Perfil de Instituição",
+        description = "Cadastra um novo perfil de instituição"
+    )
     @ApiResponses({
-        @ApiResponse(responseCode = "201"),
-        @ApiResponse(responseCode = "400")
+        @ApiResponse(responseCode = "201", description = "Perfil de instituição criado"),
+        @ApiResponse(responseCode = "400", description = "Requisição inválida")
     })
     public ResponseEntity<PerfilInstituicao> create(@RequestBody @Valid PerfilInstituicao perfilInstituicao) {
         repository.save(perfilInstituicao);
@@ -72,11 +89,14 @@ public class PerfilInstituicaoController {
     @DeleteMapping("{id}")
     @ResponseStatus(NO_CONTENT)
     @CacheEvict(allEntries = true)
-    @Operation(summary = "Deletar Perfil de Instituição")
+    @Operation(
+        summary = "Deletar Perfil de Instituição",
+        description = "Deleta um perfil de instituição"
+    )
     @ApiResponses({
-        @ApiResponse(responseCode = "204"),
-        @ApiResponse(responseCode = "404"),
-        @ApiResponse(responseCode = "401")
+        @ApiResponse(responseCode = "204", description = "Perfil de instituição deletado"),
+        @ApiResponse(responseCode = "404", description = "Perfil de instituição não encontrado"),
+        @ApiResponse(responseCode = "401", description = "Sem autorização")
     })
     public ResponseEntity<Object> destroy(@PathVariable Long id) {
         repository.findById(id).orElseThrow(
@@ -88,12 +108,15 @@ public class PerfilInstituicaoController {
 
     @PutMapping("{id}")
     @CacheEvict(allEntries = true)
-    @Operation(summary = "Atualizar Perfil de Instituição")
+    @Operation(
+        summary = "Atualizar Perfil de Instituição",
+        description = "Atualiza um perfil de instituição específico"
+    )
     @ApiResponses({
-        @ApiResponse(responseCode = "200"),
-        @ApiResponse(responseCode = "400"),
-        @ApiResponse(responseCode = "401"),
-        @ApiResponse(responseCode = "404")
+        @ApiResponse(responseCode = "200", description = "Perfil de instituição atualizado"),
+        @ApiResponse(responseCode = "400", description = "Requisição inválida"),
+        @ApiResponse(responseCode = "401", description = "Sem autorização"),
+        @ApiResponse(responseCode = "404", description = "Perfil de instituição não encontrado")
     })
     public ResponseEntity<PerfilInstituicao> update(@PathVariable Long id, @RequestBody @Valid PerfilInstituicao perfilInstituicaoAtualizado) {
         PerfilInstituicao perfilInstituicao = repository.findById(id).orElseThrow(

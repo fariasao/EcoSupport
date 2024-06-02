@@ -39,14 +39,28 @@ public class EmpresaController {
 
     @GetMapping
     @Cacheable
-    @Operation(summary = "Listar Empresas")
+    @Operation(
+        summary = "Listar Empresas",
+        description = "Retorna uma lista paginada de empresas"
+    )
+    @ApiResponses({ 
+        @ApiResponse(responseCode = "200", description = "Empresas listadas"),
+        @ApiResponse(responseCode = "404", description = "Empresas não encontradas")
+    })
     public PagedModel<EntityModel<Empresa>> index(@PageableDefault(size = 5) Pageable pageable) {
         Page<Empresa> page = repository.findAll(pageable);
         return assembler.toModel(page);
     }
 
     @GetMapping("{id}")
-    @Operation(summary = "Listar Empresa por ID")
+    @Operation(
+        summary = "Listar Empresa por ID",
+        description = "Retorna uma empresa específica"
+    )
+    @ApiResponses({ 
+        @ApiResponse(responseCode = "200", description = "Empresa listada"),
+        @ApiResponse(responseCode = "404", description = "Empresa não encontrada")
+    })
     public EntityModel<Empresa> show(@PathVariable Long id) {
         Empresa empresa = repository.findById(id).orElseThrow(
             () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Empresa não encontrada")
@@ -57,10 +71,13 @@ public class EmpresaController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @CacheEvict(allEntries = true)
-    @Operation(summary = "Cadastrar Empresa")
+    @Operation(
+        summary = "Cadastrar Empresa",
+        description = "Cadastra uma nova empresa"
+    )
     @ApiResponses({
-        @ApiResponse(responseCode = "201"),
-        @ApiResponse(responseCode = "400")
+        @ApiResponse(responseCode = "201", description = "Empresa criada"),
+        @ApiResponse(responseCode = "400", description = "Requisição inválida")
     })
     public ResponseEntity<Empresa> create(@RequestBody @Valid Empresa empresa) {
         repository.save(empresa);
@@ -72,11 +89,14 @@ public class EmpresaController {
     @DeleteMapping("{id}")
     @ResponseStatus(NO_CONTENT)
     @CacheEvict(allEntries = true)
-    @Operation(summary = "Deletar Empresa")
+    @Operation(
+        summary = "Deletar Empresa",
+        description = "Deleta uma empresa específica"
+    )
     @ApiResponses({
-        @ApiResponse(responseCode = "204"),
-        @ApiResponse(responseCode = "404"),
-        @ApiResponse(responseCode = "401")
+        @ApiResponse(responseCode = "204", description = "Empresa deletada"),
+        @ApiResponse(responseCode = "404", description = "Empresa não encontrada"),
+        @ApiResponse(responseCode = "401", description = "Não autorizado")
     })
     public ResponseEntity<Object> destroy(@PathVariable Long id) {
         repository.findById(id).orElseThrow(
@@ -88,12 +108,15 @@ public class EmpresaController {
 
     @PutMapping("{id}")
     @CacheEvict(allEntries = true)
-    @Operation(summary = "Atualizar Empresa")
+    @Operation(
+        summary = "Atualizar Empresa",
+        description = "Atualiza uma empresa específica"
+    )
     @ApiResponses({
-        @ApiResponse(responseCode = "200"),
-        @ApiResponse(responseCode = "400"),
-        @ApiResponse(responseCode = "401"),
-        @ApiResponse(responseCode = "404")
+        @ApiResponse(responseCode = "200", description = "Empresa atualizada"),
+        @ApiResponse(responseCode = "400", description = "Requisição inválida"),
+        @ApiResponse(responseCode = "401", description = "Não autorizado"),
+        @ApiResponse(responseCode = "404", description = "Empresa não encontrada")
     })
     public ResponseEntity<Empresa> update(@PathVariable Long id, @RequestBody @Valid Empresa empresaAtualizada) {
         Empresa empresa = repository.findById(id).orElseThrow(

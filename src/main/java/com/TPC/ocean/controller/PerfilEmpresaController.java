@@ -39,14 +39,28 @@ public class PerfilEmpresaController {
 
     @GetMapping
     @Cacheable
-    @Operation(summary = "Listar Perfis de Empresas")
+    @Operation(
+        summary = "Listar Perfis de Empresas",
+        description = "Retorna uma lista paginada de perfis de empresas"
+    )
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Perfis de empresas listados"),
+        @ApiResponse(responseCode = "404", description = "Perfis de empresas não encontrados")
+    })
     public PagedModel<EntityModel<PerfilEmpresa>> index(@PageableDefault(size = 5) Pageable pageable) {
         Page<PerfilEmpresa> page = repository.findAll(pageable);
         return assembler.toModel(page);
     }
 
     @GetMapping("{id}")
-    @Operation(summary = "Listar Perfil de Empresa por ID")
+    @Operation(
+        summary = "Listar Perfil de Empresa por ID",
+        description = "Retorna um perfil de empresa específico"
+    )
+    @ApiResponses({ 
+        @ApiResponse(responseCode = "200", description = "Perfil de empresa listado"),
+        @ApiResponse(responseCode = "404", description = "Perfil de empresa não encontrado")
+    })
     public EntityModel<PerfilEmpresa> show(@PathVariable Long id) {
         PerfilEmpresa perfilEmpresa = repository.findById(id).orElseThrow(
             () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Perfil de empresa não encontrado")
@@ -57,10 +71,13 @@ public class PerfilEmpresaController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @CacheEvict(allEntries = true)
-    @Operation(summary = "Cadastrar Perfil de Empresa")
+    @Operation(
+        summary = "Cadastrar Perfil de Empresa",
+        description = "Cadastra um novo perfil de empresa"
+    )
     @ApiResponses({
-        @ApiResponse(responseCode = "201"),
-        @ApiResponse(responseCode = "400")
+        @ApiResponse(responseCode = "201", description = "Perfil de empresa criado"),
+        @ApiResponse(responseCode = "400", description = "Requisição inválida")
     })
     public ResponseEntity<PerfilEmpresa> create(@RequestBody @Valid PerfilEmpresa perfilEmpresa) {
         repository.save(perfilEmpresa);
@@ -72,11 +89,14 @@ public class PerfilEmpresaController {
     @DeleteMapping("{id}")
     @ResponseStatus(NO_CONTENT)
     @CacheEvict(allEntries = true)
-    @Operation(summary = "Deletar Perfil de Empresa")
+    @Operation(
+        summary = "Deletar Perfil de Empresa",
+        description = "Deleta um perfil de empresa específico"
+    )
     @ApiResponses({
-        @ApiResponse(responseCode = "204"),
-        @ApiResponse(responseCode = "404"),
-        @ApiResponse(responseCode = "401")
+        @ApiResponse(responseCode = "204", description = "Perfil de empresa deletado"),
+        @ApiResponse(responseCode = "404", description = "Perfil de empresa não encontrado"),
+        @ApiResponse(responseCode = "401", description = "Acesso não autorizado")
     })
     public ResponseEntity<Object> destroy(@PathVariable Long id) {
         repository.findById(id).orElseThrow(
@@ -88,12 +108,15 @@ public class PerfilEmpresaController {
 
     @PutMapping("{id}")
     @CacheEvict(allEntries = true)
-    @Operation(summary = "Atualizar Perfil de Empresa")
+    @Operation(
+        summary = "Atualizar Perfil de Empresa",
+        description = "Atualiza um perfil de empresa específico"
+    )
     @ApiResponses({
-        @ApiResponse(responseCode = "200"),
-        @ApiResponse(responseCode = "400"),
-        @ApiResponse(responseCode = "401"),
-        @ApiResponse(responseCode = "404")
+        @ApiResponse(responseCode = "200", description = "Perfil de empresa atualizado"),
+        @ApiResponse(responseCode = "400", description = "Requisição inválida"),
+        @ApiResponse(responseCode = "401", description = "Acesso não autorizado"),
+        @ApiResponse(responseCode = "404", description = "Perfil de empresa não encontrado")
     })
     public ResponseEntity<PerfilEmpresa> update(@PathVariable Long id, @RequestBody @Valid PerfilEmpresa perfilEmpresaAtualizado) {
         PerfilEmpresa perfilEmpresa = repository.findById(id).orElseThrow(

@@ -39,14 +39,28 @@ public class TransacaoController {
 
     @GetMapping
     @Cacheable
-    @Operation(summary = "Listar Transações")
+    @Operation(
+        summary = "Listar Transações",
+        description = "Retorna uma lista paginada de transações"
+    )
+    @ApiResponses({ 
+        @ApiResponse(responseCode = "200", description = "Transações listadas"),
+        @ApiResponse(responseCode = "404", description = "Transações não encontradas")
+    })
     public PagedModel<EntityModel<Transacao>> index(@PageableDefault(size = 5) Pageable pageable) {
         Page<Transacao> page = repository.findAll(pageable);
         return assembler.toModel(page);
     }
 
     @GetMapping("{id}")
-    @Operation(summary = "Listar Transação por ID")
+    @Operation(
+        summary = "Listar Transação por ID",
+        description = "Retorna uma transação específica"
+    )
+    @ApiResponses({ 
+        @ApiResponse(responseCode = "200", description = "Transação listada"),
+        @ApiResponse(responseCode = "404", description = "Transação não encontrada")
+    })
     public EntityModel<Transacao> show(@PathVariable Long id) {
         Transacao transacao = repository.findById(id).orElseThrow(
             () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Transação não encontrada")
@@ -57,10 +71,13 @@ public class TransacaoController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @CacheEvict(allEntries = true)
-    @Operation(summary = "Cadastrar Transação")
+    @Operation(
+        summary = "Cadastrar Transação",
+        description = "Cadastra uma nova transação"
+    )
     @ApiResponses({
-        @ApiResponse(responseCode = "201"),
-        @ApiResponse(responseCode = "400")
+        @ApiResponse(responseCode = "201", description = "Transação criada"),
+        @ApiResponse(responseCode = "400", description = "Requisição inválida")
     })
     public ResponseEntity<Transacao> create(@RequestBody @Valid Transacao transacao) {
         repository.save(transacao);
@@ -72,11 +89,14 @@ public class TransacaoController {
     @DeleteMapping("{id}")
     @ResponseStatus(NO_CONTENT)
     @CacheEvict(allEntries = true)
-    @Operation(summary = "Deletar Transação")
+    @Operation(
+        summary = "Deletar Transação",
+        description = "Deleta uma transação específica"
+    )
     @ApiResponses({
-        @ApiResponse(responseCode = "204"),
-        @ApiResponse(responseCode = "404"),
-        @ApiResponse(responseCode = "401")
+        @ApiResponse(responseCode = "204", description = "Transação deletada"),
+        @ApiResponse(responseCode = "404", description = "Transação não encontrada"),
+        @ApiResponse(responseCode = "401", description = "Não autorizado")
     })
     public ResponseEntity<Object> destroy(@PathVariable Long id) {
         repository.findById(id).orElseThrow(
@@ -88,12 +108,15 @@ public class TransacaoController {
 
     @PutMapping("{id}")
     @CacheEvict(allEntries = true)
-    @Operation(summary = "Atualizar Transação")
+    @Operation(
+        summary = "Atualizar Transação",
+        description = "Atualiza uma transação específica"
+    )
     @ApiResponses({
-        @ApiResponse(responseCode = "200"),
-        @ApiResponse(responseCode = "400"),
-        @ApiResponse(responseCode = "401"),
-        @ApiResponse(responseCode = "404")
+        @ApiResponse(responseCode = "200", description = "Transação atualizada"),
+        @ApiResponse(responseCode = "400", description = "Requisição inválida"),
+        @ApiResponse(responseCode = "401", description = "Não autorizado"),
+        @ApiResponse(responseCode = "404", description = "Transação não encontrada")
     })
     public ResponseEntity<Transacao> update(@PathVariable Long id, @RequestBody @Valid Transacao transacaoAtualizada) {
         Transacao transacao = repository.findById(id).orElseThrow(
