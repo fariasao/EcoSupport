@@ -7,7 +7,9 @@ import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
@@ -47,8 +49,16 @@ public class ServicoController {
         @ApiResponse(responseCode = "200", description = "Serviços listados"),
         @ApiResponse(responseCode = "404", description = "Serviços não encontrados")
     })
-    public PagedModel<EntityModel<Servico>> index(@PageableDefault(size = 5) Pageable pageable) {
-        Page<Servico> page = repository.findAll(pageable);
+    public PagedModel<EntityModel<Servico>> index(
+        @PageableDefault(size = 10) Pageable pageable,
+        @RequestParam(defaultValue = "id") String sort,
+        @RequestParam(defaultValue = "asc") String direction) 
+    {
+        Sort.Direction sortDirection = Sort.Direction.fromString(direction);
+        Sort sortBy = Sort.by(sortDirection, sort);
+        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sortBy);
+
+        Page<Servico> page = repository.findAll(sortedPageable);
         return assembler.toModel(page);
     }
 

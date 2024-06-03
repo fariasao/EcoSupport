@@ -7,7 +7,9 @@ import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
@@ -47,8 +49,16 @@ public class TransacaoController {
         @ApiResponse(responseCode = "200", description = "Transações listadas"),
         @ApiResponse(responseCode = "404", description = "Transações não encontradas")
     })
-    public PagedModel<EntityModel<Transacao>> index(@PageableDefault(size = 5) Pageable pageable) {
-        Page<Transacao> page = repository.findAll(pageable);
+    public PagedModel<EntityModel<Transacao>> index(
+        @PageableDefault(size = 10) Pageable pageable,
+        @RequestParam(defaultValue = "id") String sort,
+        @RequestParam(defaultValue = "asc") String direction) 
+    {
+        Sort.Direction sortDirection = Sort.Direction.fromString(direction);
+        Sort sortBy = Sort.by(sortDirection, sort);
+        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sortBy);
+
+        Page<Transacao> page = repository.findAll(sortedPageable);
         return assembler.toModel(page);
     }
 
