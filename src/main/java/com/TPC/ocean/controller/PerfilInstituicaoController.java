@@ -29,7 +29,7 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/perfil-instituicao")
 @CacheConfig(cacheNames = "perfil-instituicao")
-@Tag(name = "perfilInstituicao", description = "Gerenciamento de perfis de instituições")
+@Tag(name = "Perfil-Instituição", description = "Gerenciamento de perfis de instituições")
 public class PerfilInstituicaoController {
     @Autowired
     PerfilInstituicaoRepository repository;

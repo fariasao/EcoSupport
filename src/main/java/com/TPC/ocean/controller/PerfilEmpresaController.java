@@ -29,7 +29,7 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/perfil-empresa")
 @CacheConfig(cacheNames = "perfil-empresa")
-@Tag(name = "perfilEmpresa", description = "Gerenciamento de perfis de empresas")
+@Tag(name = "Perfil-Empresa", description = "Gerenciamento de perfis de empresas")
 public class PerfilEmpresaController {
     @Autowired
     PerfilEmpresaRepository repository;

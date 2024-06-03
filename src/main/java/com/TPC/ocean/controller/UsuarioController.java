@@ -29,7 +29,7 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/usuarios")
 @CacheConfig(cacheNames = "usuarios")
-@Tag(name = "usuario", description = "Gerenciamento de usuários")
+@Tag(name = "Usuários", description = "Gerenciamento de usuários")
 public class UsuarioController {
     @Autowired
     UsuarioRepository repository;

@@ -29,7 +29,7 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/exibicoes")
 @CacheConfig(cacheNames = "exibicoes")
-@Tag(name = "exibicao", description = "Gerenciamento de exibições")
+@Tag(name = "Exibições", description = "Gerenciamento de exibições")
 public class ExibicaoController {
     @Autowired
     ExibicaoRepository repository;
