@@ -133,12 +133,13 @@ public class ContratoController {
             () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contrato não encontrado")
         );
         
+        contrato.setEmpresa(contratoAtualizado.getEmpresa());
         contrato.setTipoContrato(contratoAtualizado.getTipoContrato());
         contrato.setDataInicio(contratoAtualizado.getDataInicio());
         contrato.setDataFim(contratoAtualizado.getDataFim());
         contrato.setValor(contratoAtualizado.getValor());
         contrato.setStatus(contratoAtualizado.getStatus());
-        contrato.setEmpresa(contratoAtualizado.getEmpresa());
+        contrato.setAssinaturaPendente(contratoAtualizado.getAssinaturaPendente());
         
         repository.save(contrato);
         

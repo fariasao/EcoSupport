@@ -133,10 +133,10 @@ public class TransacaoController {
             () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Transação não encontrada")
         );
         
+        transacao.setContrato(transacaoAtualizada.getContrato());
         transacao.setData(transacaoAtualizada.getData());
         transacao.setValor(transacaoAtualizada.getValor());
         transacao.setDescricao(transacaoAtualizada.getDescricao());
-        transacao.setContrato(transacaoAtualizada.getContrato());
         
         repository.save(transacao);
         

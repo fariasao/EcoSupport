@@ -133,10 +133,10 @@ public class ExibicaoController {
             () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Exibição não encontrada")
         );
         
+        exibicao.setTransacao(exibicaoAtualizada.getTransacao());
+        exibicao.setValor(exibicaoAtualizada.getValor());
         exibicao.setDataExibicao(exibicaoAtualizada.getDataExibicao());
         exibicao.setDescricao(exibicaoAtualizada.getDescricao());
-        exibicao.setValor(exibicaoAtualizada.getValor());
-        exibicao.setTransacao(exibicaoAtualizada.getTransacao());
         
         repository.save(exibicao);
         

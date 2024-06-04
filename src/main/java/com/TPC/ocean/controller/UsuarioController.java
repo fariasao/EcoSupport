@@ -137,6 +137,9 @@ public class UsuarioController {
         usuario.setEmail(usuarioAtualizado.getEmail());
         usuario.setSenha(usuarioAtualizado.getSenha());
         usuario.setTipo(usuarioAtualizado.getTipo());
+        usuario.setEmpresa(usuarioAtualizado.getEmpresa());
+        usuario.setInstituicao(usuarioAtualizado.getInstituicao());
+        usuario.setPessoaFisica(usuarioAtualizado.getPessoaFisica());
         
         repository.save(usuario);
         

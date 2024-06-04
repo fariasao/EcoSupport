@@ -133,10 +133,10 @@ public class ServicoController {
             () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Serviço não encontrado")
         );
         
+        servico.setEmpresa(servicoAtualizado.getEmpresa());
         servico.setDataServico(servicoAtualizado.getDataServico());
         servico.setDescricao(servicoAtualizado.getDescricao());
         servico.setStatus(servicoAtualizado.getStatus());
-        servico.setEmpresa(servicoAtualizado.getEmpresa());
         
         repository.save(servico);
         
