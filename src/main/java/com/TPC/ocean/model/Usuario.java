@@ -21,7 +21,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Usuario {
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank(message = "{usuario.nome.notblank}")
@@ -36,8 +37,20 @@ public class Usuario {
     private String senha;
 
     @NotBlank(message = "{usuario.tipo.notblank}")
-    @Pattern(regexp = "empresa|instituicao", message = "{usuario.tipo.invalid}")
+    @Pattern(regexp = "pf|empresa|instituicao", message = "{usuario.tipo.invalid}")
     private String tipo;
+
+    @ManyToOne
+    @JoinColumn(name = "ID_Empresa", nullable = true)
+    private Empresa empresa;
+
+    @ManyToOne
+    @JoinColumn(name = "ID_Instituicao", nullable = true)
+    private Instituicao instituicao;
+
+    @ManyToOne
+    @JoinColumn(name = "ID_Pessoa_Fisica", nullable = true)
+    private PessoaFisica pessoaFisica;
 
     public EntityModel<Usuario> toEntityModel() {
         return HateoasHelper.createModelWithLinks(this, UsuarioController.class, id);

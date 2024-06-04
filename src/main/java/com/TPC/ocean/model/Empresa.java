@@ -4,10 +4,7 @@ import org.springframework.hateoas.EntityModel;
 import com.TPC.ocean.controller.EmpresaController;
 import com.TPC.ocean.util.HateoasHelper;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -18,12 +15,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "tb_empresas")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Empresa {
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank(message = "{empresa.nome.notblank}")

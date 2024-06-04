@@ -15,12 +15,14 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "tb_transacoes")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Transacao {
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
