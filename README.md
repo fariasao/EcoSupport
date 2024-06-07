@@ -11,19 +11,19 @@
 
 ## Integrantes
 - Beatriz Lucas - RM99104 (Responsável por atuar em Disruptive Architectures, Compliance & Quality Assurance e DevOps Tools & Cloud Computing);
-- Enzo Farias - RM98792 (Responsável por atuar em Disruptive Architectures, Advanced Business Development with .NET, Java Advanced e Mobile App Development);
-- Ewerton Gonçalves - RM98571 (Responsável por atuar em Mastering Relational and Non-Relational Database, Mobile App Development e DevOps Tools & Cloud Computing);
-- Guilherme Tantulli - RM97890 (Responsável por atuar em Compliance & Quality Assurance, Advanced Business Development with .NET e Mobile App Development);
-- Thiago Zupelli - RM99085 (Responsável por atuar em Disruptive Architectures, Advanced Business Development with .NET, Java Advanced e Mastering Relational and Non-Relational Database).
+- Enzo Farias - RM98792 (Responsável por atuar em Advanced Business Development with .NET, Java Advanced e DevOps Tools & Cloud Computing);
+- Ewerton Gonçalves - RM98571 (Responsável por atuar em Mastering Relational and Non-Relational Database e Disruptive Architectures);
+- Guilherme Tantulli - RM97890 (Responsável por atuar em Compliance & Quality Assurance e Mobile App Development);
+- Thiago Zupelli - RM99085 (Responsável por atuar em Advanced Business Development with .NET, Java Advanced e Mastering Relational and Non-Relational Database).
 
 
 ## Instruções para uso da aplicação
 ### Iniciando a Aplicação
 
 1. **Execução da Aplicação**:
-    - Para iniciar a aplicação, você deve executar o arquivo **`TpcApplication.java`**. Isso pode ser feito diretamente dentro de sua IDE (Ambiente de Desenvolvimento Integrado) de preferência.
-    - Localize o arquivo **`TpcApplication.java`** na pasta de projetos.
-    - Clique com o botão direito no arquivo e selecione **`Run 'TpcApplication'`** ou use o atalho para executar o arquivo diretamente, geralmente encontrado na barra de ferramentas ou menu de contexto.
+    - Para iniciar a aplicação, você deve executar o arquivo **`OceanApplication.java`**. Isso pode ser feito diretamente dentro de sua IDE (Ambiente de Desenvolvimento Integrado) de preferência.
+    - Localize o arquivo **`OceanApplication.java`** na pasta de projetos.
+    - Clique com o botão direito no arquivo e selecione **`Run 'OceanApplication'`** ou use o atalho para executar o arquivo diretamente, geralmente encontrado na barra de ferramentas ou menu de contexto.
 2. **Verificação do Servidor**:
     - Após executar a aplicação, verifique se o servidor foi iniciado corretamente observando a saída no console da IDE, que deve indicar que o Spring Boot está rodando na porta **`8080`**.
 
@@ -38,7 +38,7 @@
 
 Aqui estão exemplos de como interagir com cada tipo de recurso:
 
-**1. Users**
+**1. Usuários**
 
 - **Listar todos os usuários**
     
