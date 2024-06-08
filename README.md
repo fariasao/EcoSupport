@@ -6,7 +6,7 @@
 - [Modelo Entidade Relacional;](#modelo-entidade-relacional)
 - [Link para vídeo de funcionamento do projeto;](#link-para-vídeo-de-funcionamento-do-projeto)
 - [Link para vídeo Pitch;](#link-para-vídeo-pitch)
-- [Listagem de Endpoints;](#listagem-de-endpoints)
+- [Listagem dos Endpoints;](#listagem-dos-endpoints)
 - [Link para o Swagger.](#link-para-o-swagger)
 
 ## Integrantes
@@ -225,7 +225,7 @@ Banco de Dados:\
 ## Link para vídeo Pitch
 [![Vídeo TPC](http://img.youtube.com/vi/lOF3FIVVJzI/0.jpg)](https://www.youtube.com/watch?v=lOF3FIVVJzI)
 
-## Listagem de Endpoints
+## Listagem dos Endpoints
 ### Endpoints para Usuários:
 GET /usuarios - Buscar todos os usuários.\
 GET /usuarios/{id} - Buscar um usuário pelo ID.\
